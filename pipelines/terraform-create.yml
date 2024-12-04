@@ -4,7 +4,7 @@ pipelines:
     group: Terraform
     materials:
       git-da613e5:
-        git: https://github.com/saiyadaz/roboshop-terraform.git
+        git: https://github.com/saiyadaz/roboshop-terraform1.git
         shallow_clone: false
         auto_update: true
         branch: main
