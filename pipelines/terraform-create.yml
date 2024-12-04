@@ -1,6 +1,6 @@
 format_version: 10
 pipelines:
-  roboshop-tf-apply:
+  roboshop1-tf-apply:
     group: Terraform
     materials:
       git-da613e5:
