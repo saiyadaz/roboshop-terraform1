@@ -1,0 +1,36 @@
+format_version: 10
+pipelines:
+  roboshop-tf-destroy:
+    group: Terraform
+    materials:
+      git-da613e5:
+        git: https://github.com/saiyadaz/roboshop-terraform.git
+        shallow_clone: false
+        auto_update: true
+        branch: main
+    secure_variables:
+      TF_VAR_vault_token: AES:aDYeWFSJr2CrxD1kDIaIhA==:+HV6ZPYNVQdomjC4XnZQ61ort1Ys8AMzAVh0wd9y/18
+    stages:
+      - DEV:
+          fetch_materials: true
+          environment_variables:
+            env: dev
+          approval:
+            type: manual
+          jobs:
+            terraform-apply:
+              tasks:
+                - exec: {command: terraform, arguments: [ "init", "-backend-config=env-dev/state.tfvars" ], run_if: passed}
+                - exec: {command: terraform, arguments: [ "destroy","-var-file=env-dev/main.tfvars", "-auto-approve" ], run_if: passed}
+
+#     - PROD:
+#         fetch_materials: true
+#         environment_variables:
+#           env: prod
+#         approval:
+#           type: success
+#         jobs:
+#           terraform-apply:
+#             tasks:
+#             - exec: {command: terraform, arguments: [ "init", "-backend-config=env-prod/state.tfvars" ], run_if: passed}
+#             - exec: {command: terraform, arguments: [ "destroy", "-var-file=env-prod/main.tfvars", "-auto-approve" ], run_if: passed}
