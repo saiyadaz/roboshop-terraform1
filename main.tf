@@ -16,7 +16,7 @@ resource "aws_route53_record" "record" {
   count   = length(var.components)
   name    = var.components[count.index]
   type    = "A"
-  zone_id = "Z02385991VFZVIKN8WPK8"
+  zone_id = "Z0599937U1I5C34JZJE7"
   records = [aws_instance.instance[count.index].private_ip]
   ttl     = 3
 }
