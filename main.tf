@@ -4,7 +4,7 @@ variable "components" {
 
 resource "aws_instance" "instance" {
   count                  = length(var.components)
-  ami                    = "ami-0d035b0fa9820ac92"
+  ami                    = "ami-02082c2bb2f49f709"
   instance_type          = "t3.small"
   vpc_security_group_ids = ["sg-06b8bece9ed37b3dc"]
   tags = {
