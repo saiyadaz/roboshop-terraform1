@@ -28,12 +28,12 @@ max_capacity = 5
 min_capacity = 1
 
 #doc db
-docdb={
+docdb = {
   main = {
-      family         = "docdb4.0"
-      instance_class ="db.t3.medium"
-      instance_count = 1
-      engine_version = 4.0.0
+    family         = "docdb4.0"
+    instance_class = "db.t3.medium"
+    instance_count = 1
+    engine_version = "4.0.0"
 }
 }
 #rds
