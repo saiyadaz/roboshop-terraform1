@@ -1,26 +1,3 @@
-variable "components" {
-  default = ["frontend", "catalogue", "cart", "user", "shipping", "payment", "dispatch"]
-}
-
-resource "aws_instance" "instance" {
-  count                  = length(var.components)
-  ami                    = "ami-02082c2bb2f49f709"
-  instance_type          = "t3.small"
-  vpc_security_group_ids = ["sg-0719fd3602de52422"]
-  tags = {
-    Name = var.components[count.index]
-  }
-}
-
-resource "aws_route53_record" "record" {
-  count   = length(var.components)
-  name    = var.components[count.index]
-  type    = "A"
-  zone_id = "Z0599937U1I5C34JZJE7"
-  records = [aws_instance.instance[count.index].private_ip]
-  ttl     = 3
-}
-
 
 module "vpc" {
   source = "./modules/vpc"
