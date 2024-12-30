@@ -50,11 +50,17 @@ resource "aws_eks_node_group" "main" {
   }
 }
 resource "null_resource" "aws-auth" {
+
   depends_on = [aws_eks_node_group.main]
+
   provisioner "local-exec" {
     command = <<EOF
 aws eks update-kubeconfig --name "${var.env}-eks"
-aws-auth upsert --maproles --rolearn arn:aws:iam::633788536644:role/ci-server-role --username system:node:{{EC2PrivateDNSName}} --groups system:masters
+aws-auth upsert --maproles --rolearn arn:aws:iam::058264231458:role/ci-server-role--username system:node:{{EC2PrivateDNSName}} --groups system:masters
 EOF
   }
+}
+resource "aws_eks_addon" "addon-ebs" {
+  cluster_name = aws_eks_cluster.cluster.name
+  addon_name   = "aws-ebs-csi-driver"
 }

@@ -84,6 +84,11 @@ resource "aws_iam_policy" "node-externalDNS" {
 }
 EOF
 }
+
+resource "aws_iam_role_policy_attachment" "node-AmazonEBSCSIDriverPolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  role       = aws_iam_role.node-role.name
+}
 resource "aws_iam_role_policy_attachment" "node-externalDNS" {
   policy_arn = aws_iam_policy.node-externalDNS.arn
   role       = aws_iam_role.node-role.name
