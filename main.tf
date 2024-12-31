@@ -49,20 +49,7 @@ module "rds" {
   kms_key_id              = var.kms_key_id
 }
 
-module "rabbitmq" {
-  for_each = var.rabbitmq
-  source   = "./modules/rabbitmq"
 
-  instance_type           = each.value["instance_type"]
-  component               = each.value["component"]
-  env                     = var.env
-  bastion_nodes           = var.bastion_nodes
-  kms_key_id              = var.kms_key_id
-  server_app_port_sg_cidr = var.backend_subnets
-  subnet_ids              = module.vpc.db_subnets
-  vpc_id                  = module.vpc.vpc_id
-  zone_id                 = var.zone_id
-}
 
 module "elasticache" {
   for_each = var.elasticache
