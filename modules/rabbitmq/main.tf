@@ -72,3 +72,4 @@ resource "aws_route53_record" "server" {
   zone_id = var.zone_id
   records = [aws_instance.instance.private_ip]
   ttl     = 30
+}
