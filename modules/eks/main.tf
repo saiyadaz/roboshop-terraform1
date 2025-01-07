@@ -103,7 +103,7 @@ resource "null_resource" "aws-auth" {
 
   provisioner "local-exec" {
     command = <<EOF
-aws eks update-kubeconfig --name "${var.env}-eks"
+aws eks update-kubeconfig --name ${var.env}-eks
 aws-auth upsert --maproles --rolearn arn:aws:iam::058264231458:role/workstation-role ---username system:node:{{EC2PrivateDNSName}} --groups system:masters
 EOF
   }
@@ -112,9 +112,35 @@ resource "aws_eks_addon" "addon-ebs" {
   cluster_name = aws_eks_cluster.cluster.name
   addon_name   = "aws-ebs-csi-driver"
 }
+
+data "aws_iam_policy_document" "assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["pods.eks.amazonaws.com"]
+    }
+
+    actions = [
+      "sts:AssumeRole",
+      "sts:TagSession"
+    ]
+  }
+}
+
+resource "aws_iam_role" "example" {
+  name               = "eks-pod-identity-example"
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "example_s3" {
+  policy_arn = aws_iam_policy.node-externalDNS.arn
+  role       = aws_iam_role.example.name
+}
 resource "aws_eks_pod_identity_association" "example" {
   cluster_name    = aws_eks_cluster.cluster.name
   namespace       = "default"
   service_account = "external-dns"
-  role_arn        = aws_iam_role.node-role.arn
+  role_arn        = aws_iam_role.example.arn
 }
