@@ -104,7 +104,7 @@ resource "null_resource" "aws-auth" {
   provisioner "local-exec" {
     command = <<EOF
 aws eks update-kubeconfig --name ${var.env}-eks
-aws-auth upsert --maproles --rolearn arn:aws:iam::058264231458:role/workstation-role ---username system:node:{{EC2PrivateDNSName}} --groups system:masters
+aws-auth upsert --maproles --rolearn arn:aws:iam::058264231458:role/workstation-role --username system:node:{{EC2PrivateDNSName}} --groups system:masters
 EOF
   }
 }
