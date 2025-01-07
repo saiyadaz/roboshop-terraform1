@@ -112,3 +112,9 @@ resource "aws_eks_addon" "addon-ebs" {
   cluster_name = aws_eks_cluster.cluster.name
   addon_name   = "aws-ebs-csi-driver"
 }
+resource "aws_eks_pod_identity_association" "example" {
+  cluster_name    = aws_eks_cluster.cluster.name
+  namespace       = "default"
+  service_account = "external-dns"
+  role_arn        = aws_iam_role.node-role.arn
+}
